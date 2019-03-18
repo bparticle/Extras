@@ -13,7 +13,7 @@ Trig8:include(Unit)
 
 function Trig8:init(args)
   args.title = "Trig 8"
-  args.mnemonic = "RM"
+  args.mnemonic = "T8"
   args.version = 1
   Unit.init(self, args)
 end
