@@ -5,7 +5,7 @@ local units = {
 
   return {
     title = "Extras",
-    name = "Bparticle",
+    name = "bparticle",
     contact = "via O|D Forums @bparticle",
     keyword = "Extras",
     units = units
