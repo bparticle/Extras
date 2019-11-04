@@ -1,6 +1,6 @@
 local units = {
     {category = "Sequencers"},
-    {title="Punchcard 8",moduleName="Punchcard8",keywords="sequencer, trigger"}
+    {title="Punch card",moduleName="Punchcard",keywords="sequencer, trigger"}
   }
 
   return {

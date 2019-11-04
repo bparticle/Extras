@@ -6,16 +6,16 @@ local Gate = require "Unit.ViewControl.Gate"
 local Encoder = require "Encoder"
 local ply = app.SECTION_PLY
 
-local Punchcard8 = Class{}
-Punchcard8:include(Unit)
+local Punchcard = Class{}
+Punchcard:include(Unit)
 
-function Punchcard8:init(args)
-  args.title = "Punchcard 8"
+function Punchcard:init(args)
+  args.title = "Punch card"
   args.mnemonic = "8T"
   Unit.init(self,args)
 end
 
-function Punchcard8:onLoadGraph(channelCount)
+function Punchcard:onLoadGraph(channelCount)
 
     local numTrigs = 8
     local localVars = {}
@@ -104,7 +104,7 @@ local views = {
     collapsed = {},
   }
 
-function Punchcard8:onLoadViews(objects,branches)
+function Punchcard:onLoadViews(objects,branches)
     local numTrigs = 8
     local controls = {}
 
@@ -134,4 +134,4 @@ function Punchcard8:onLoadViews(objects,branches)
     return controls, views
 end
 
-return Punchcard8
+return Punchcard
