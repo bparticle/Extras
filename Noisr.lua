@@ -22,12 +22,16 @@ function Noisr:onLoadGraph(channelCount)
     local adsr = self:createObject("ADSR", "adsr")
     local attack = self:createObject("GainBias", "attack")
     local decay = self:createObject("GainBias", "decay")
+    local attackRange = self:createObject("MinMax","attackRange")
+    local decayRange = self:createObject("MinMax","decayRange")
     local vca = self:createObject("Multiply", "vca")
 
     connect(trig, "out", adsr, "Gate")
 
     connect(attack, "Out", adsr, "Attack")
     connect(decay, "Out", adsr, "Decay")
+    connect(attack,"Out",attackRange,"In")
+    connect(decay,"Out",decayRange,"In")
     adsr:hardSet("Sustain", 0)
     adsr:hardSet("Release", 0)
 
@@ -49,6 +53,7 @@ function Noisr:onLoadViews(objects, branches)
         branch = branches.attack,
         description = "Attack",
         gainbias = objects.attack,
+        range = objects.attackRange,
         biasMap = Encoder.getMap("ADSR"),
         biasUnits = app.unitSecs,
         initialBias = 0.010
@@ -59,6 +64,7 @@ function Noisr:onLoadViews(objects, branches)
         branch = branches.decay,
         description = "Decay",
         gainbias = objects.decay,
+        range = objects.decayRange,
         biasMap = Encoder.getMap("ADSR"),
         biasUnits = app.unitSecs,
         initialBias = 0.050
