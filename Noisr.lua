@@ -19,26 +19,45 @@ function Noisr:onLoadGraph(channelCount)
     local noise1 = self:createObject("WhiteNoise", "noise1")
     local trig = self:createObject("Comparator", "trig")
     trig:setTriggerMode()
+    local vca = self:createObject("Multiply", "vca")
+
     local adsr = self:createObject("ADSR", "adsr")
     local attack = self:createObject("GainBias", "attack")
     local decay = self:createObject("GainBias", "decay")
-    local attackRange = self:createObject("MinMax","attackRange")
-    local decayRange = self:createObject("MinMax","decayRange")
-    local vca = self:createObject("Multiply", "vca")
+    local sustain = self:createObject("GainBias", "sustain")
+    local release = self:createObject("GainBias", "release")
+    local attackRange = self:createObject("MinMax", "attackRange")
+    local decayRange = self:createObject("MinMax", "decayRange")
+    local sustainRange = self:createObject("MinMax", "sustainRange")
+    local releaseRange = self:createObject("MinMax", "releaseRange")
 
     connect(trig, "out", adsr, "Gate")
 
+    connect(self, "In1", gate, "In")
+    connect(gate, "Out", adsr, "Gate")
+    connect(adsr, "Out", self, "Out1")
+
     connect(attack, "Out", adsr, "Attack")
     connect(decay, "Out", adsr, "Decay")
-    connect(attack,"Out",attackRange,"In")
-    connect(decay,"Out",decayRange,"In")
-    adsr:hardSet("Sustain", 0)
-    adsr:hardSet("Release", 0)
+    connect(sustain, "Out", adsr, "Sustain")
+    connect(release, "Out", adsr, "Release")
+
+    connect(attack, "Out", attackRange, "In")
+    connect(decay, "Out", decayRange, "In")
+    connect(sustain, "Out", sustainRange, "In")
+    connect(release, "Out", releaseRange, "In")
+
+    -- adsr:hardSet("Decay", 0)
+    -- adsr:hardSet("Sustain", 0)
 
     connect(noise1, "Out", vca, "Left")
     connect(adsr, "Out", vca, "Right")
     connect(vca, "Out", self, "Out1")
 
+    self:createMonoBranch("attack", attack, "In", attack, "Out")
+    self:createMonoBranch("decay", decay, "In", decay, "Out")
+    self:createMonoBranch("sustain", sustain, "In", sustain, "Out")
+    self:createMonoBranch("release", release, "In", release, "Out")
     self:createMonoBranch("trig", trig, "In", trig, "Out")
     self:createMonoBranch("attack", attack, "In", attack, "Out")
     self:createMonoBranch("decay", decay, "In", decay, "Out")
@@ -48,6 +67,8 @@ end
 function Noisr:onLoadViews(objects, branches)
     local controls = {}
 
+    controls.scope = OutputScope{monitor = self, width = 4 * ply}
+
     controls.attack = GainBias{
         button = "A",
         branch = branches.attack,
@@ -56,7 +77,7 @@ function Noisr:onLoadViews(objects, branches)
         range = objects.attackRange,
         biasMap = Encoder.getMap("ADSR"),
         biasUnits = app.unitSecs,
-        initialBias = 0.010
+        initialBias = 0.050
     }
 
     controls.decay = GainBias{
@@ -68,6 +89,28 @@ function Noisr:onLoadViews(objects, branches)
         biasMap = Encoder.getMap("ADSR"),
         biasUnits = app.unitSecs,
         initialBias = 0.050
+    }
+
+    controls.sustain = GainBias{
+        button = "S",
+        branch = branches.sustain,
+        description = "Sustain",
+        gainbias = objects.sustain,
+        range = objects.sustainRange,
+        biasMap = Encoder.getMap("unit"),
+        biasUnits = app.unitNone,
+        initialBias = 1
+    }
+
+    controls.release = GainBias{
+        button = "R",
+        branch = branches.release,
+        description = "Release",
+        gainbias = objects.release,
+        range = objects.releaseRange,
+        biasMap = Encoder.getMap("ADSR"),
+        biasUnits = app.unitSecs,
+        initialBias = 0.100
     }
 
     controls.trig = Gate{
