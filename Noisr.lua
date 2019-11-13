@@ -1,6 +1,7 @@
 local app = app
 local Class = require "Base.Class"
 local Unit = require "Unit"
+local Fader = require "Unit.ViewControl.Fader"
 local GainBias = require "Unit.ViewControl.GainBias"
 local Gate = require "Unit.ViewControl.Gate"
 local Encoder = require "Encoder"
@@ -66,8 +67,6 @@ end
 
 function Noisr:onLoadViews(objects, branches)
     local controls = {}
-
-    controls.scope = OutputScope{monitor = self, width = 4 * ply}
 
     controls.attack = GainBias{
         button = "A",
