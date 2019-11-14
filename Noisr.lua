@@ -34,9 +34,6 @@ function Noisr:onLoadGraph(channelCount)
 
     connect(trig, "out", adsr, "Gate")
 
-    connect(self, "In1", gate, "In")
-    connect(gate, "Out", adsr, "Gate")
-
     connect(attack, "Out", adsr, "Attack")
     connect(decay, "Out", adsr, "Decay")
     connect(sustain, "Out", adsr, "Sustain")
