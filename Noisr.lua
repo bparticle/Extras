@@ -17,7 +17,7 @@ function Noisr:init(args)
     Unit.init(self, args)
 end
 
-function ADSR:onLoadGraph(channelCount)
+function Noisr:onLoadGraph(channelCount)
     if channelCount == 2 then
         self:loadStereoGraph()
     else
