@@ -112,7 +112,7 @@ function Noisr:onLoadViews(objects, branches)
         button = 1,
         branch = branches.trig,
         description = "trig",
-        comparator = trig
+        comparator = objects.trig
     }
 
     return controls, views
