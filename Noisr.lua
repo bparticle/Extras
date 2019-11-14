@@ -61,6 +61,16 @@ function Noisr:onLoadGraph(channelCount)
 
 end
 
+local views = {
+    expanded = {"input", "attack", "decay", "sustain", "release"},
+    collapsed = {},
+    input = {"scope", "input"},
+    attack = {"scope", "attack"},
+    decay = {"scope", "decay"},
+    sustain = {"scope", "sustain"},
+    release = {"scope", "release"}
+}
+
 function Noisr:onLoadViews(objects, branches)
     local controls = {}
 
