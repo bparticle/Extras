@@ -4,6 +4,7 @@ local Unit = require "Unit"
 local Fader = require "Unit.ViewControl.Fader"
 local GainBias = require "Unit.ViewControl.GainBias"
 local Gate = require "Unit.ViewControl.Gate"
+local OutputScope = require "Unit.ViewControl.OutputScope"
 local Encoder = require "Encoder"
 local ply = app.SECTION_PLY
 
@@ -16,7 +17,15 @@ function Noisr:init(args)
     Unit.init(self, args)
 end
 
-function Noisr:onLoadGraph(channelCount)
+function ADSR:onLoadGraph(channelCount)
+    if channelCount == 2 then
+        self:loadStereoGraph()
+    else
+        self:loadMonoGraph()
+    end
+end
+
+function Noisr:loadMonoGraph()
     local noise1 = self:createObject("WhiteNoise", "noise1")
     local trig = self:createObject("Comparator", "trig")
     trig:setTriggerMode()
@@ -61,10 +70,15 @@ function Noisr:onLoadGraph(channelCount)
 
 end
 
+function Noisr:loadStereoGraph()
+    self:loadMonoGraph()
+    connect(self.objects.vca, "Out", self, "Out2")
+end
+
 local views = {
-    expanded = {"input", "attack", "decay", "sustain", "release"},
+    expanded = {"trigger", "attack", "decay", "sustain", "release"},
     collapsed = {},
-    input = {"scope", "input"},
+    trigger = {"scope","trigger"},
     attack = {"scope", "attack"},
     decay = {"scope", "decay"},
     sustain = {"scope", "sustain"},
@@ -73,6 +87,8 @@ local views = {
 
 function Noisr:onLoadViews(objects, branches)
     local controls = {}
+
+    controls.scope = OutputScope{monitor = self, width = 4 * ply}
 
     controls.attack = GainBias{
         button = "A",
