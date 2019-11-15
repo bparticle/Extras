@@ -76,7 +76,7 @@ function Noisr:loadStereoGraph()
 end
 
 local views = {
-    expanded = {"trigger", "attack", "decay", "sustain", "release"},
+    expanded = {"trig", "attack", "decay", "sustain", "release"},
     collapsed = {},
     trigger = {"scope","trigger"},
     attack = {"scope", "attack"},
