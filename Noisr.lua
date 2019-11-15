@@ -41,21 +41,21 @@ function Noisr:loadMonoGraph()
     local sustainRange = self:createObject("MinMax", "sustainRange")
     local releaseRange = self:createObject("MinMax", "releaseRange")
 
-    connect(trig, "out", adsr, "Gate")
-
+    
     connect(attack, "Out", adsr, "Attack")
     connect(decay, "Out", adsr, "Decay")
     connect(sustain, "Out", adsr, "Sustain")
     connect(release, "Out", adsr, "Release")
-
+    
     connect(attack, "Out", attackRange, "In")
     connect(decay, "Out", decayRange, "In")
     connect(sustain, "Out", sustainRange, "In")
     connect(release, "Out", releaseRange, "In")
-
+    
     -- adsr:hardSet("Decay", 0)
     -- adsr:hardSet("Sustain", 0)
-
+    
+    connect(trig, "Out", adsr, "Gate")
     connect(noise1, "Out", vca, "Left")
     connect(adsr, "Out", vca, "Right")
     connect(vca, "Out", self, "Out1")
