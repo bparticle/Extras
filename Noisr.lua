@@ -78,7 +78,7 @@ end
 local views = {
     expanded = {"trig", "attack", "decay", "sustain", "release"},
     collapsed = {},
-    trigger = {"scope","trigger"},
+    trig = {"scope","trig"},
     attack = {"scope", "attack"},
     decay = {"scope", "decay"},
     sustain = {"scope", "sustain"},
