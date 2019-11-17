@@ -55,7 +55,7 @@ function Noisr:loadMonoGraph()
     -- adsr:hardSet("Decay", 0)
     -- adsr:hardSet("Sustain", 0)
     
-    connect(trig, "Out", adsr, "Gate")
+    connect(trig, "out", adsr, "Gate")
     connect(noise1, "Out", vca, "Left")
     connect(adsr, "Out", vca, "Right")
     connect(vca, "Out", self, "Out1")
@@ -76,12 +76,10 @@ function Noisr:loadStereoGraph()
 end
 
 local views = {
-    expanded = {"trig", "attack", "decay", "sustain", "release"},
+    expanded = {"trig", "attack", "release"},
     collapsed = {},
     trig = {"scope","trig"},
     attack = {"scope", "attack"},
-    decay = {"scope", "decay"},
-    sustain = {"scope", "sustain"},
     release = {"scope", "release"}
 }
 
@@ -100,29 +98,7 @@ function Noisr:onLoadViews(objects, branches)
         biasUnits = app.unitSecs,
         initialBias = 0.050
     }
-
-    controls.decay = GainBias{
-        button = "D",
-        branch = branches.decay,
-        description = "Decay",
-        gainbias = objects.decay,
-        range = objects.decayRange,
-        biasMap = Encoder.getMap("ADSR"),
-        biasUnits = app.unitSecs,
-        initialBias = 0.050
-    }
-
-    controls.sustain = GainBias{
-        button = "S",
-        branch = branches.sustain,
-        description = "Sustain",
-        gainbias = objects.sustain,
-        range = objects.sustainRange,
-        biasMap = Encoder.getMap("unit"),
-        biasUnits = app.unitNone,
-        initialBias = 1
-    }
-
+    
     controls.release = GainBias{
         button = "R",
         branch = branches.release,
