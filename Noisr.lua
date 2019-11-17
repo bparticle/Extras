@@ -33,28 +33,32 @@ function Noisr:loadMonoGraph()
 
     local adsr = self:createObject("ADSR", "adsr")
     local attack = self:createObject("GainBias", "attack")
-    local decay = self:createObject("GainBias", "decay")
-    local sustain = self:createObject("GainBias", "sustain")
     local release = self:createObject("GainBias", "release")
     local attackRange = self:createObject("MinMax", "attackRange")
     local decayRange = self:createObject("MinMax", "decayRange")
     local sustainRange = self:createObject("MinMax", "sustainRange")
     local releaseRange = self:createObject("MinMax", "releaseRange")
 
-    
+    -- Replace the GainBias controls for sustain and decay with constants
+    local sustain = self:createObject("Constant", "sustain")
+    sustain:hardSet("Value", 1.0)
+
+    local decay = self:createObject("Constant", "decay")
+    decay:hardSet("Value", 0.0)
+
     connect(attack, "Out", adsr, "Attack")
     connect(decay, "Out", adsr, "Decay")
     connect(sustain, "Out", adsr, "Sustain")
     connect(release, "Out", adsr, "Release")
-    
+
     connect(attack, "Out", attackRange, "In")
     connect(decay, "Out", decayRange, "In")
     connect(sustain, "Out", sustainRange, "In")
     connect(release, "Out", releaseRange, "In")
-    
+
     -- adsr:hardSet("Decay", 0)
     -- adsr:hardSet("Sustain", 0)
-    
+
     connect(trig, "Out", adsr, "Gate")
     connect(noise1, "Out", vca, "Left")
     connect(adsr, "Out", vca, "Right")
@@ -78,7 +82,7 @@ end
 local views = {
     expanded = {"trig", "attack", "release"},
     collapsed = {},
-    trig = {"scope","trig"},
+    trig = {"scope", "trig"},
     attack = {"scope", "attack"},
     release = {"scope", "release"}
 }
@@ -97,28 +101,6 @@ function Noisr:onLoadViews(objects, branches)
         biasMap = Encoder.getMap("ADSR"),
         biasUnits = app.unitSecs,
         initialBias = 0.050
-    }
-
-    controls.decay = GainBias{
-        button = "D",
-        branch = branches.decay,
-        description = "Decay",
-        gainbias = objects.decay,
-        range = objects.decayRange,
-        biasMap = Encoder.getMap("ADSR"),
-        biasUnits = app.unitSecs,
-        initialBias = 0.050
-    }
-
-    controls.sustain = GainBias{
-        button = "S",
-        branch = branches.sustain,
-        description = "Sustain",
-        gainbias = objects.sustain,
-        range = objects.sustainRange,
-        biasMap = Encoder.getMap("unit"),
-        biasUnits = app.unitNone,
-        initialBias = 1
     }
 
     controls.release = GainBias{
