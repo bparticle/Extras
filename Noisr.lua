@@ -76,12 +76,10 @@ function Noisr:loadStereoGraph()
 end
 
 local views = {
-    expanded = {"trig", "attack", "decay", "sustain", "release"},
+    expanded = {"trig", "attack", "release"},
     collapsed = {},
     trig = {"scope","trig"},
     attack = {"scope", "attack"},
-    decay = {"scope", "decay"},
-    sustain = {"scope", "sustain"},
     release = {"scope", "release"}
 }
 
@@ -135,7 +133,7 @@ function Noisr:onLoadViews(objects, branches)
     }
 
     controls.trig = Gate{
-        button = 1,
+        button = "trig",
         branch = branches.trig,
         description = "trig",
         comparator = objects.trig
