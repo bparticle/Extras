@@ -28,7 +28,7 @@ end
 function Noisr:loadMonoGraph()
     local noise1 = self:createObject("WhiteNoise", "noise1")
     local trig = self:createObject("Comparator", "trig")
-    trig:setGateMode()
+    trig:setTriggerMode()
     local vca = self:createObject("Multiply", "vca")
 
     local adsr = self:createObject("ADSR", "adsr")
