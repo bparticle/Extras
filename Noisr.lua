@@ -41,7 +41,7 @@ function Noisr:loadMonoGraph()
 
     -- Replace the GainBias controls for sustain and decay with constants
     local sustain = self:createObject("Constant", "sustain")
-    sustain:hardSet("Value", 1.0)
+    sustain:hardSet("Value", 0.0)
 
     local decay = self:createObject("Constant", "decay")
     decay:hardSet("Value", 0.0)
