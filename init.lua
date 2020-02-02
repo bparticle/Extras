@@ -2,8 +2,8 @@ local units = {
     {category = "Sequencers"}, 
     {title = "Punch card", moduleName = "Punchcard", keywords = "sequencer, trigger"},
 
-    {category="Experimental"},
-    {title="Noisr",moduleName="Noisr",keywords="noise, percussion, source"},
+    -- {category="Experimental"},
+    -- {title="Noisr",moduleName="Noisr",keywords="noise, percussion, source"},
 }
 
 return {
